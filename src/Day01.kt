@@ -1,12 +1,4 @@
-import java.lang.IllegalArgumentException
-import java.util.ArrayList
 
-object Consts {
-
-
-
-
-}
 fun main() {
     val NUMBERS = listOf(
             "zero",
@@ -20,6 +12,7 @@ fun main() {
             "eight",
             "nine"
     )
+
     fun part1(input: List<String>): Int {
         return input.sumOf {
             val s = it.first(Char::isDigit)
@@ -32,18 +25,17 @@ fun main() {
     fun part2(input: List<String>): Int {
 
         return input.sumOf {
-           var digits = ArrayList<Int>()
-           var n1 = 0
-           it.forEachIndexed {index, c ->
-               if (c.isDigit()) digits.add(c.minus('0'))
-               NUMBERS.forEachIndexed{i,_ ->
-                   if (it.substring(index).startsWith(NUMBERS.get(i))) digits.add(i)
+            val digits = ArrayList<Int>()
+            it.forEachIndexed { index, c ->
+                if (c.isDigit()) digits.add(c.minus('0'))
+                NUMBERS.forEachIndexed { i, _ ->
+                    if (it.substring(index).startsWith(NUMBERS.get(i))) digits.add(i)
 
-               }
-           }
-           n1 =  digits.first()*10 + digits.last()
-           digits.clear()
-           n1
+                }
+            }
+            val n1: Int = digits.first() * 10 + digits.last()
+            digits.clear()
+            n1
         }
 
     }
