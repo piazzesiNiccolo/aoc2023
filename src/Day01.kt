@@ -1,17 +1,5 @@
-
 fun main() {
-    val NUMBERS = listOf(
-            "zero",
-            "one",
-            "two",
-            "three",
-            "four",
-            "five",
-            "six",
-            "seven",
-            "eight",
-            "nine"
-    )
+    val NUMBERS = listOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
 
     fun part1(input: List<String>): Int {
         return input.sumOf {
@@ -28,9 +16,11 @@ fun main() {
             val digits = ArrayList<Int>()
             it.forEachIndexed { index, c ->
                 if (c.isDigit()) digits.add(c.minus('0'))
-                NUMBERS.forEachIndexed { i, _ ->
-                    if (it.substring(index).startsWith(NUMBERS.get(i))) digits.add(i)
+                else {
+                    NUMBERS.forEachIndexed { i, _ ->
+                        if (it.substring(index).startsWith(NUMBERS.get(i))) digits.add(i)
 
+                    }
                 }
             }
             val n1: Int = digits.first() * 10 + digits.last()
@@ -44,6 +34,6 @@ fun main() {
     val testInput = readInput("Day01_test")
     check(part2(testInput) == 281)
     val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+    println( "Part 1: ${part1(input)}")
+    println( "Part 2: ${part2(input)}")
 }
