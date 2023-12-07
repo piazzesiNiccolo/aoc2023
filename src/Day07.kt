@@ -82,35 +82,52 @@ object Part1Parser : HandTypeParser() {
 
 object Part2Parser: HandTypeParser(){
     override fun parseHandType(hand: String): CardType {
-        if (!hand.contains('J')) return Part1Parser.parseHandType(hand)
-      /*  val js = Regex("J").findAll(hand).count()
-        return when(js){
-            5,4 -> CardType.FIVE
-            3 -> CardType.FOUR
+        val unique = hand.toSet()
+        val counts = unique.associateWith { c -> hand.count {it == c} }
+        val jokerCount = counts['J']
+        return when (unique.size) {
+            1 -> CardType.FIVE
             2 -> {
-                val uniq = hand.toSet().size
-                if (uniq == 2) CardType.FIVE
-                else
-                    if (uniq == 3) CardType.FOUR
-                    else CardType.TRIS
-
-
-            }
-            1 -> {
-                var res = CardType.HIGH_CARD
-                val  uniq = hand.toSet().size
-                if (uniq == 5) res = CardType.ONE_PAIR
-                else if(uniq == 2) CardType.FIVE
-                else {
-
+                if (counts.any { (_, c) -> c == 4 }) {
+                    if ('J' in unique) {
+                        CardType.FIVE
+                    } else {
+                        CardType.FOUR
+                    }
+                } else {
+                    when (jokerCount) {
+                        2 -> CardType.FIVE
+                        3 -> CardType.FIVE
+                        else -> CardType.FULLHOUSE
+                    }
                 }
-                res
-
             }
-
-            else -> throw  IllegalArgumentException("Invalid hand")
-        }*/
-        return  CardType.TWO_PAIR
+            3 -> {
+                if (counts.count { (_, c) -> c == 2 } == 2) {
+                    when (jokerCount) {
+                        1 -> CardType.FULLHOUSE
+                        2 -> CardType.FOUR
+                        else -> CardType.TWO_PAIR
+                    }
+                } else {
+                    when (jokerCount) {
+                        1 -> CardType.FOUR
+                        3 -> CardType.FOUR
+                        else -> CardType.TRIS
+                    }
+                }
+            }
+            4 -> {
+                when (jokerCount) {
+                    1 -> CardType.TRIS
+                    2 -> CardType.TRIS
+                    else -> CardType.ONE_PAIR
+                }
+            }
+            else -> {
+                if (jokerCount == 1) CardType.ONE_PAIR else CardType.HIGH_CARD
+            }
+        }
     }
 }
 fun main() {
@@ -142,7 +159,7 @@ fun main() {
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day07_test")
     check(part1(testInput) == 6440L)
-    check(part2(testInput) == 0L)
+    check(part2(testInput) == 5905L)
     val input = readInput("Day07")
     println("Part 1: ${part1(input)}")
     println("Part 2: ${part2(input)}")
