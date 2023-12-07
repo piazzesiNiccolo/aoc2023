@@ -4,7 +4,7 @@ fun main() {
         return this.map { NUM.findAll(it).map { it.value.toLong() }.toList() }
     }
 
-    fun List<List<Long>>.updateSeeds1(seeds: MutableList<Long>) {
+    fun List<List<Long>>.updateSeeds(seeds: MutableList<Long>) {
         val changed = BooleanArray(seeds.size)
         changed.fill(false)
         this.forEach { list ->
@@ -21,16 +21,14 @@ fun main() {
 
     }
 
-    fun List<List<Long>>.updateSeeds2(seeds: MutableList<Pair<Long, Long>>) {
 
-    }
 
     fun part1(input: String): Long {
         val parts = input.split("\n\n")
         val seeds = NUM.findAll(parts[0]).map { it.value }.map { it.toLong() }.toMutableList()
 
         for (i in 1..7) {
-            parts[i].split(":\n")[1].split("\n").toListOfNumber().updateSeeds1(seeds)
+            parts[i].split(":\n")[1].split("\n").toListOfNumber().updateSeeds(seeds)
         }
         return seeds.min()
 
@@ -38,18 +36,7 @@ fun main() {
     }
 
     fun part2(input: String): Long {
-        val parts = input.split("\n\n")
-        val seed = NUM.findAll(parts[0]).map { it.value }.map { it.toLong() }.toList()
-
-        val seedRanges = mutableListOf<Pair<Long, Long>>()
-        for (i in seed.indices step 2) {
-            seedRanges.add(Pair(seed[i], seed[i] + seed[i + 1] - 1))
-        }
-        seedRanges.println()
-        for (i in 1..7) {
-            parts[i].split(":\n")[1].split("\n").toListOfNumber().updateSeeds2(seedRanges)
-        }
-        return seedRanges.minOf { it.first }
+        return 0L
     }
 
     // test if implementation meets criteria from the description, like:
